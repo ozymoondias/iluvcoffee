@@ -1,12 +1,24 @@
-export class Coffee {
-  _id: string;
-  name: string;
-  brand: string;
-  flavors: string[];
-}
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Flavor } from './flavor.entity';
 
-export class CoffeeDto {
-  data: {
-    coffee: Coffee;
-  };
+@Entity() // sql table === 'coffee'
+export class Coffee {
+  @PrimaryGeneratedColumn()
+  _id: number;
+
+  @Column()
+  name: string;
+
+  @Column()
+  brand: string;
+
+  @JoinTable()
+  @ManyToMany((type) => Flavor, (flavor) => flavor.coffees, { cascade: true })
+  flavors: Flavor[];
 }
